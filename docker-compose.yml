@@ -1,0 +1,12 @@
+version: '3.5'
+
+services:
+  lp_cloud:
+    container_name: lp_cloud
+    restart: always
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    build: .
+    ports:
+      - "3000:3000"

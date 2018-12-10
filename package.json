@@ -1,0 +1,19 @@
+{
+  "name": "LP-CLoud",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js"
+  },
+  "author": "kkui",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "config": "^3.0.0",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.4",
+    "minimist": "^1.2.0",
+    "morgan": "^1.9.1",
+    "swipl": "^1.0.3"
+  }
+}
