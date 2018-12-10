@@ -1,5 +1,7 @@
 Authorship: Kaho Kui
+
 Environment: Ubuntu 16.04.4 LTS
+
 (Local) Software Versions: node v8.12, docker v18.09.0, docker-compose v1.21.2
 
 This project contains code pertaining to the LP-Cloud LPaaS
