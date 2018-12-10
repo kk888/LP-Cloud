@@ -38,7 +38,7 @@ var controllerFn = {
         controllerFn.replacePl(req, res).then(
             r => controllerFn.arPl(r.req, r.res, "-a")
         ).catch(err => {
-            res.status(500).json({ message: err });
+            res.status(400).json({ message: err });
         })
     ,
     arPl: (req, res, type) => {
