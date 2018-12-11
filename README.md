@@ -13,7 +13,14 @@ This project contains code pertaining to the LP-Cloud LPaaS
 
 ### Setup Instructions:
 
-#### Local
+### Docker Install Instruction
+Find the instructions for your operating system
+https://docs.docker.com/install/
+
+### Docker Compose Install Instruction
+https://docs.docker.com/compose/install/
+
+#### Local without Docker
 1. npm install
 2. npm start
 
@@ -26,7 +33,8 @@ The json file currently configures port number
 
 ###### 3.Run
 ```sh
-sudo docker-compose up -d
+cd LP_directory
+sudo docker-compose up
 ```
 
 ###### 4.Test
