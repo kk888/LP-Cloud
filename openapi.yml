@@ -1,0 +1,188 @@
+openapi: 3.0.0
+servers: []
+info:
+  description: |
+    This document contains the RESTful API specification for the LP-Cloud LPaaS system
+  version: "1.0.0"
+  title: LP-Cloud
+tags:
+  - name: query
+    description: API related to solving query
+  - name: database
+    description: API related to database operations
+paths:
+  '/swi/solve':
+    post:
+      tags:
+        - query
+      summary: Solve for all results using given goal
+      description: >-
+        Solve using the goal provided in request body. Solve for all results. Must contains database in cookie.
+      operationId: solveall
+      parameters:
+        - name: prologBase
+          in: cookie
+          description: Base64 encoded string of the Prolog database dump
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation returns the response of the goal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoalResponse'
+        '400':
+          description: Invalid input
+      requestBody:
+        description: Containing Prolog goal given by user to solve
+        required: true
+        content:
+          application/json:
+              schema:
+                $ref: '#/components/schemas/Goal'
+  '/swi/solve/{count}':
+    post:
+      tags:
+        - query
+      summary: Solve for n results using given goal
+      description: >-
+        Solve using the goal provided in request body. Limit the number of responses by path parameter. Must contains database in cookie.
+      operationId: solven
+      parameters:
+        - name: count
+          in: path
+          description: Parameter to limit number of results
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: prologBase
+          in: cookie
+          description: Base64 encoded string of the Prolog database dump
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation returns the response of the goal
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoalResponse'
+        '400':
+          description: Invalid input
+      requestBody:
+        description: Containing Prolog goal given by user to solve
+        required: true
+        content:
+          application/json:
+              schema:
+                $ref: '#/components/schemas/Goal'
+
+  '/swi/db/':
+    get:
+      tags:
+        - database
+      summary: Decode and return current database
+      description: >-
+        Read from the cookie, decode the database, and return the decoded database.
+      operationId: getDb
+      parameters:
+        - name: prologBase
+          in: cookie
+          description: Base64 encoded string of the Prolog database dump.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation returns prolog database
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrologDatabase'
+        '400':
+          description: Prolog Database was not found in request
+    post:
+      tags:
+        - database
+      summary: Update the database
+      description: >-
+        Optionally attempt to replace the database using the new database given, then optionally attempt to assert the goal provided.
+      operationId: assert
+      parameters:
+        - name: prologBase
+          in: cookie
+          description: Base64 encoded string of the Prolog database dump. Database will be created accordingly if this is not given.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Bad database or goal provided
+      requestBody:
+        description: Containing new database and/or a Prolog goal to assert
+        required: false
+        content:
+          application/json:
+              schema:
+                $ref: '#/components/schemas/AssertBody'
+    delete:
+      tags:
+        - database
+      summary: Retract a goal
+      description: >-
+        Attempt to retract a goal in the database.
+      operationId: retract
+      parameters:
+        - name: prologBase
+          in: cookie
+          description: Base64 encoded string of the Prolog database dump.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: successful operation
+        '400':
+          description: Prolog Database was not found in request
+      requestBody:
+        description: Containing Prolog goal to retract
+        required: false
+        content:
+          application/json:
+              schema:
+                $ref: '#/components/schemas/Goal'
+components:
+  schemas:
+    Goal:
+      type: object
+      properties:
+        goal:
+          type: string
+    GoalResponse:
+      type: object
+      properties:
+        output:
+          type: array
+          items:
+            type: object
+            properties:
+              X:
+                type: string
+    PrologDatabase:
+      type: object
+      properties:
+        prologBase:
+          type: string
+    AssertBody:
+      type: object
+      properties:
+        prologBase:
+          type: string
+        goal:
+          type: string
