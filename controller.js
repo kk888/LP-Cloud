@@ -11,16 +11,16 @@ var controllerFn = {
             res.status(200).json({ prologBase: helper.fromB64(req.cookies.prologBase) }),
     replacePl: (req, res) => {
         return new Promise((resolve, reject) => {
-            if (req.body.newBase !== undefined) {
-                fs.writeFile("./input.pl", helper.fromB64(req.body.newBase), err => {
+            if (req.body.prologBase !== undefined) {
+                fs.writeFile("./input.pl", helper.fromB64(req.body.prologBase), err => {
                     if (err) {
                         return sendErrorMsg(err, res);
                     }
                     try {
                         let output = child_process.execSync('swipl -s input.pl -g "write(\'\')." 2>&1 -t halt.').toString();
                         if (!output) {
-                            res.cookie('prologBase', req.body.newBase);
-                            req.cookies.prologBase = req.body.newBase;
+                            res.cookie('prologBase', req.body.prologBase);
+                            req.cookies.prologBase = req.body.prologBase;
                             return resolve({ req, res });
                         } else {
                             return reject("Execution Error: " + output);
