@@ -29,8 +29,10 @@ paths:
       responses:
         '200':
           description: successful operation returns the response of the goal
-          schema:
-            $ref: '#/components/schemas/GoalResponse'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoalResponse'
         '400':
           description: Invalid input
       requestBody:
@@ -97,8 +99,10 @@ paths:
       responses:
         '200':
           description: successful operation returns prolog database
-          schema:
-            $ref: '#/components/schemas/PrologDatabase'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PrologDatabase'
         '400':
           description: Prolog Database was not found in request
     post:
